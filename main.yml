@@ -1,0 +1,38 @@
+---
+- hosts: all
+  become: true
+  vars:
+    project_root: "/home/ubuntu"
+  tasks:
+
+    - name: Set timezone to Africa/Lagos
+      command: timedatectl set-timezone Africa/Lagos
+
+    - name: set hostnanmes
+      command: hostnamectl set-hostname "AFEEZWEB-${{ count.index + 1}}"
+
+    - name: update
+      apt: update_cache=yes   
+   
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Copy the bash script file
+      template:
+        src: templates/script.sh
+        dest: "{{ project_root }}/script.sh"
+
+    - name: Set executable permission on script
+      file:
+        path: "{{ project_root }}/script.sh"
+        mode: 0755
+
+    - name: Run bash script
+      command: /bin/bash "{{ project_root }}/script.sh"
+  
+    - name: Start Apache2 service
+      service:
+        name: apache2
+        state: started
