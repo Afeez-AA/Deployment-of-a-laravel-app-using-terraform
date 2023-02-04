@@ -27,21 +27,7 @@ resource "null_resource" "ansible-playbook" {
 
   depends_on = [aws_instance.nginx]
 }
-#   depends_on = [aws_instance.nginx]
-#   }
-# }
-# provisioner "local-exec" {
-#   command = "echo '[web]' >  /home/ubuntu/host-inventory"
-# }
 
-# provisioner "local-exec" {
-#   command = "echo ${self.public_ip} >>  /home/ubuntu/host-inventory"
-# }
-
-
-# provisioner "local-exec" {
-#   command = "ansible-playbook -i host-inventory --private-key ${local.private_key_path} apache2.yml"
-# }
 
 
 

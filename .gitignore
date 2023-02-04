@@ -1,0 +1,6 @@
+.terraform.lock.hcl
+.terraform
+afz
+terraform.tfstate
+terraform.tfstate.backup
+templates/userdata.sh

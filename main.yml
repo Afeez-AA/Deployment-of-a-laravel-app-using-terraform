@@ -7,17 +7,15 @@
 
     - name: Set timezone to Africa/Lagos
       command: timedatectl set-timezone Africa/Lagos
-
-    - name: set hostnanmes
-      command: hostnamectl set-hostname "AFEEZWEB-${{ count.index + 1}}"
-
+  
     - name: update
       apt: update_cache=yes   
    
-    - name: Install Apache2
-      apt:
-        name: apache2
-        state: present
+    - name: Install Nginx
+      apt: name=nginx state=latest
+
+      notify:
+        - restart nginx
 
     - name: Copy the bash script file
       template:
@@ -32,7 +30,10 @@
     - name: Run bash script
       command: /bin/bash "{{ project_root }}/script.sh"
   
-    - name: Start Apache2 service
-      service:
-        name: apache2
-        state: started
+      notify:
+        - restart nginx    
+  
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=reloaded
+ 
